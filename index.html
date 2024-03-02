@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Cheers</title>
+    <script src="js/jquery-2.1.3.min.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" type="img/png" href="img/favicon.png">
+</head>
+    <body>
+        <div class="wrapper">
+        <header>
+            <div class="container">
+                <div class="item">
+                    <div class="left"><img src="img/cheers.png" alt="">
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="center">
+                        <h1 class="page-title">My Favorite Restaurants</h1>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="right">
+                        <img src="img/cheers.png" alt="">
+                    </div>
+                </div>
+            </div>
+        </header>
+    
+        <!-- formタグを使って入力フォームを作る -->
+        <form>
+            <!-- 店名をテキストボックスに入力 -->
+            <div class="input">
+                <label for="name">店名：</label>
+                <input type="text" id="name" placeholder="店名">
+            </div>
+
+            <!-- カテゴリをプルダウンメニューから入力 -->
+            <div>
+                <label for="genre">ジャンル：</label>
+                <select name="genre" id="genre">
+                    <option value="イタリアン">イタリアン</option>
+                    <option value="フレンチ">フレンチ</option>
+                    <option value="地中海料理">地中海料理</option>
+                    <option value="居酒屋">居酒屋</option>
+                    <option value="ラーメン">ラーメン</option>
+                    <option value="その他" selected>その他</option>
+                </select>
+            </div>
+            <button id="addInfo">お店を追加</button>
+            <button id="allclear">すべて削除</button>
+        </form>
+        <!-- お店をリストで表示する -->
+        <section class="list">
+            <p>お店リスト</p>
+            <ul id="listItem"></ul>
+        </section>
+
+        <footer><small>Copyrights 2024 *** All RIghts Reserved.</small></footer>
+    </div>
+    <script>
+        // 0.お店情報をローカルストレージから読み込む
+
+        // 1.お店情報を追加する [お店を追加]ボタン クリックイベント
+        // id addInfoを監視し、クリックされたら、
+        $("#addInfo").on("click",function(){
+            let restaurant_name =$("#name").val(); // 変数restaurant_nameにテキストボックスから入力したお店の名前を入れる
+            let restaurant_genre =$("#genre").val(); // 変数restaurant_genreにセレクトボックスから選択したお店のジャンルを入れる
+            let info = {
+                name: restaurant_name,
+                genre: restaurant_genre, 
+           };// オブジェクト形式の変数infoに店名とお店のジャンルを入れる
+            // ローカルストレージに保管するためには文字列にしないといけない。
+            // ローカルストレージにJSON.stringifyでオブジェクト形式の変数 info をJSON形式の文字列に変換して保管する
+           localStorage.setItem('info', JSON.stringify(info));
+       });
+
+        // 2.ローカルストレージに保存されたデータを表示する
+        // 1でローカルストレージに保存したのは、JSON形式の文字列。
+        // JSON形式の文字列を表示したいわけではないのでJSON.parseでオブジェクト形式のデータに変換する
+        // オブジェクト形式に変換したデータから表示したいものをHTMLに渡す
+            if(localStorage.getItem("info")){
+            const listItem = localStorage.getItem("info");
+            let obj_listItem = JSON.parse(listItem);
+            console.log(listItem);
+            console.log(obj_listItem);
+            $("#listItem").html(obj_listItem.name);
+            }
+        
+        // 3.お店情報をすべて削除する [すべて削除]ボタン クリックイベント
+        $("#allclear").on("click",function(){
+            // localStorage.removeItem("info",info);
+            localStorage.clear()
+        })
+
+    </script>
+
+</body>
+</html>
